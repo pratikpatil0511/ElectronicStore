@@ -26,7 +26,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private ModelMapper modelMapper;
 
-    @Autowired
     private static Logger logger= LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Override
@@ -60,9 +59,9 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(String id) {
         User user = this.userRepository.findById(id)
                                        .orElseThrow(() -> new ResourceNotFoundException(ApiConstant.USER_NOT_FOUND+id));
-        logger.info("Request sent to User Repository to delete User details with id:"+id);
+        logger.info("Request sent to User Repository to delete User details with id:{}"+id);
          this.userRepository.delete(user);
-         logger.info("User details deleted successfully with id:"+id);
+         logger.info("User details deleted successfully with id:{}"+id);
     }
 
     @Override
@@ -77,27 +76,27 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserById(String id) {
-        logger.info("Request sent to User Repository to get User details with id:"+id);
+        logger.info("Request sent to User Repository to get User details with id:{}"+id);
         User user = this.userRepository.findById(id)
                                        .orElseThrow(() -> new ResourceNotFoundException(ApiConstant.USER_NOT_FOUND+id));
-        logger.info("User details fetched successfully with id:"+id);
+        logger.info("User details fetched successfully with id:{}"+id);
         return this.modelMapper.map(user, UserDto.class);
     }
 
     @Override
     public UserDto getUserByEmail(String email) {
-        logger.info("Request sent to User Repository to get User details with email:"+email);
+        logger.info("Request sent to User Repository to get User details with email:{}"+email);
         User user = this.userRepository.findByEmail(email)
                                        .orElseThrow(() -> new ResourceNotFoundException(ApiConstant.USER_NOT_FOUND+email));
-        logger.info("User details fetched successfully with email:"+email);
+        logger.info("User details fetched successfully with email:{}"+email);
         return this.modelMapper.map(user, UserDto.class);
     }
 
     @Override
     public List<UserDto> searchUsers(String keywords) {
-        logger.info("Request sent to User Repository to search User details with keywords:"+keywords);
+        logger.info("Request sent to User Repository to search User details with keywords:{}"+keywords);
         List<User> userList = this.userRepository.findByNameContaining(keywords);
-        logger.info("User details fetched successfully with keywords:"+keywords);
+        logger.info("User details fetched successfully with keywords:{}"+keywords);
         List<UserDto> userDtoList = userList.stream()
                       .map(user -> this.modelMapper.map(user, UserDto.class)).collect(Collectors.toList());
         return userDtoList;

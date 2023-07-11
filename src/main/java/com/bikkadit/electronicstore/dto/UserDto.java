@@ -1,5 +1,6 @@
 package com.bikkadit.electronicstore.dto;
 
+import com.bikkadit.electronicstore.validation.ImageNameValid;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
@@ -36,6 +37,8 @@ public class UserDto {
     @NotEmpty(message = "Write about yourself")
     private String about;
 
-    @NotEmpty
+    //custom validation (by creating custom annotation)
+
+    @ImageNameValid
     private String imageName;
 }
