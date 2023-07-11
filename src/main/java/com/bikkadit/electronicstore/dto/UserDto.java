@@ -31,7 +31,7 @@ public class UserDto {
     @NotBlank
     private String gender;
 
-    @NotEmpty
+    @NotEmpty(message = "Write about yourself")
     private String about;
 
     @NotEmpty
