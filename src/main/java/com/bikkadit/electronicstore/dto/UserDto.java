@@ -20,7 +20,9 @@ public class UserDto {
     @Size(min = 3,message = "Username must have min 3 characters")
     private String name;
 
-    @Email(message = "Email should be in valid format")
+    //@Email(message = "Email should be in valid format")
+    @Pattern(regexp = "^[a-z0-9][-a-z0-9._]+@([-a-z0-9]+\\.)+[a-z]{2,5}$",
+             message = "Email should be in valid format")
     private String email;
 
     @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&-+=()])(?=\\S+$).{8,20}$",
