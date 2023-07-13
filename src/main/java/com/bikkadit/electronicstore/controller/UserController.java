@@ -81,10 +81,13 @@ public class UserController {
      * @return List of all users details
      */
     @GetMapping
-    public ResponseEntity<List<UserDto>> getAllUsers()
+    public ResponseEntity<List<UserDto>> getAllUsers(
+            @RequestParam(value="pageNumber",defaultValue =ApiConstant.PAGE_NUMBER,required = false) int pageNumber,
+            @RequestParam(value="pageSize",defaultValue =ApiConstant.PAGE_SIZE,required = false) int pageSize
+    )
     {
         logger.info("Initiated request for get all User's details");
-        List<UserDto> allUsers = this.userService.getAllUsers();
+        List<UserDto> allUsers = this.userService.getAllUsers(pageNumber,pageSize);
         logger.info("Completed request for get all User's details");
         return new ResponseEntity<>(allUsers,HttpStatus.OK);
     }
