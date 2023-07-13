@@ -16,7 +16,7 @@ public interface UserService {
     void deleteUser(String id);
 
     //get all users
-    List<UserDto> getAllUsers(int pageNumber,int pageSize);
+    List<UserDto> getAllUsers(int pageNumber,int pageSize,String sortBy,String sortDir);
 
     //get user by id
     UserDto getUserById(String id);

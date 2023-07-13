@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -68,8 +69,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getAllUsers(int pageNumber,int pageSize) {
-        Pageable pageable= PageRequest.of(pageNumber,pageSize);
+    public List<UserDto> getAllUsers(int pageNumber,int pageSize,String sortBy,String sortDir) {
+        Sort sort;
+        if(sortDir.equalsIgnoreCase("desc"))
+        {
+            sort = Sort.by(sortBy).descending();
+        }
+        else
+        {
+            sort=Sort.by(sortBy).ascending();
+        }
+        Pageable pageable= PageRequest.of(pageNumber-1,pageSize,sort); //byDefault first pageNo is 0
         logger.info("Request sent to User Repository to get all User's details");
         Page<User> page = this.userRepository.findAll(pageable);
         List<User> userList = page.getContent();

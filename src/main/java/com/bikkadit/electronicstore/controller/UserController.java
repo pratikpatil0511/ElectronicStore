@@ -83,11 +83,13 @@ public class UserController {
     @GetMapping
     public ResponseEntity<List<UserDto>> getAllUsers(
             @RequestParam(value="pageNumber",defaultValue =ApiConstant.PAGE_NUMBER,required = false) int pageNumber,
-            @RequestParam(value="pageSize",defaultValue =ApiConstant.PAGE_SIZE,required = false) int pageSize
+            @RequestParam(value="pageSize",defaultValue =ApiConstant.PAGE_SIZE,required = false) int pageSize,
+            @RequestParam(value="sortBy",defaultValue =ApiConstant.NAME,required = false) String sortBy,
+            @RequestParam(value="sortDir",defaultValue =ApiConstant.ASC,required = false) String sortDir
     )
     {
         logger.info("Initiated request for get all User's details");
-        List<UserDto> allUsers = this.userService.getAllUsers(pageNumber,pageSize);
+        List<UserDto> allUsers = this.userService.getAllUsers(pageNumber,pageSize,sortBy,sortDir);
         logger.info("Completed request for get all User's details");
         return new ResponseEntity<>(allUsers,HttpStatus.OK);
     }
