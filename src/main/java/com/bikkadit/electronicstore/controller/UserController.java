@@ -3,6 +3,7 @@ package com.bikkadit.electronicstore.controller;
 import com.bikkadit.electronicstore.constant.ApiConstant;
 import com.bikkadit.electronicstore.dto.UserDto;
 import com.bikkadit.electronicstore.helper.ApiResponse;
+import com.bikkadit.electronicstore.helper.PageableResponse;
 import com.bikkadit.electronicstore.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,7 +82,7 @@ public class UserController {
      * @return List of all users details
      */
     @GetMapping
-    public ResponseEntity<List<UserDto>> getAllUsers(
+    public ResponseEntity<PageableResponse<UserDto>> getAllUsers(
             @RequestParam(value="pageNumber",defaultValue =ApiConstant.PAGE_NUMBER,required = false) int pageNumber,
             @RequestParam(value="pageSize",defaultValue =ApiConstant.PAGE_SIZE,required = false) int pageSize,
             @RequestParam(value="sortBy",defaultValue =ApiConstant.NAME,required = false) String sortBy,
@@ -89,9 +90,9 @@ public class UserController {
     )
     {
         logger.info("Initiated request for get all User's details");
-        List<UserDto> allUsers = this.userService.getAllUsers(pageNumber,pageSize,sortBy,sortDir);
+        PageableResponse<UserDto> pageableResponse = this.userService.getAllUsers(pageNumber, pageSize, sortBy, sortDir);
         logger.info("Completed request for get all User's details");
-        return new ResponseEntity<>(allUsers,HttpStatus.OK);
+        return new ResponseEntity<>(pageableResponse,HttpStatus.OK);
     }
 
     /**

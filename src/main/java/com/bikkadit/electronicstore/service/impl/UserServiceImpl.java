@@ -4,6 +4,8 @@ import com.bikkadit.electronicstore.constant.ApiConstant;
 import com.bikkadit.electronicstore.dto.UserDto;
 import com.bikkadit.electronicstore.entity.User;
 import com.bikkadit.electronicstore.exception.ResourceNotFoundException;
+import com.bikkadit.electronicstore.helper.PageHelper;
+import com.bikkadit.electronicstore.helper.PageableResponse;
 import com.bikkadit.electronicstore.repository.UserRepository;
 import com.bikkadit.electronicstore.service.UserService;
 import org.modelmapper.ModelMapper;
@@ -69,7 +71,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getAllUsers(int pageNumber,int pageSize,String sortBy,String sortDir) {
+    public PageableResponse<UserDto> getAllUsers(int pageNumber, int pageSize, String sortBy, String sortDir) {
         Sort sort;
         if(sortDir.equalsIgnoreCase("desc"))
         {
@@ -82,11 +84,10 @@ public class UserServiceImpl implements UserService {
         Pageable pageable= PageRequest.of(pageNumber-1,pageSize,sort); //byDefault first pageNo is 0
         logger.info("Request sent to User Repository to get all User's details");
         Page<User> page = this.userRepository.findAll(pageable);
-        List<User> userList = page.getContent();
         logger.info("All User's details fetched successfully");
-        List<UserDto> userDtoList = userList.stream()
-                      .map(user -> this.modelMapper.map(user, UserDto.class)).collect(Collectors.toList());
-        return userDtoList;
+
+        PageableResponse<UserDto> pageableResponse = PageHelper.getPageableResponse(page, UserDto.class);
+        return pageableResponse;
     }
 
     @Override
