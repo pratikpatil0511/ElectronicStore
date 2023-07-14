@@ -10,5 +10,6 @@ public class ApiConstant {
     public static final String ASC="asc";
     public static final String UPLOAD_IMAGE="Image uploaded successfully : ";
     public static final String FILE_NOT_ALLOWED="File not allowed of this extension : ";
+    public static final String CATEGORY_NOT_FOUND="Category not found of id : ";
 
 }
