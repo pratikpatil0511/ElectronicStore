@@ -12,12 +12,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 @RestController
@@ -168,5 +173,16 @@ public class UserController {
                 .status(HttpStatus.CREATED)
                 .build();
         return new ResponseEntity<>(imageResponse,HttpStatus.CREATED);
+    }
+
+    @GetMapping("/getImage/{userId}")
+    public void serveUserImage(@PathVariable String userId, HttpServletResponse response) throws IOException
+    {
+        UserDto userDto = this.userService.getUserById(userId);
+        logger.info("User image name : {}",userDto.getImageName());
+        InputStream resource = fileService.getResource(imageUploadPath, userDto.getImageName());
+        response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+          //used to take input stream and give output stream
+        StreamUtils.copy(resource,response.getOutputStream());
     }
 }
