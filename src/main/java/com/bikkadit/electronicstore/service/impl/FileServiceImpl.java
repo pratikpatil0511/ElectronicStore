@@ -1,9 +1,11 @@
 package com.bikkadit.electronicstore.service.impl;
 
+import com.bikkadit.electronicstore.constant.ApiConstant;
 import com.bikkadit.electronicstore.exception.BadApiException;
 import com.bikkadit.electronicstore.service.FileService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
@@ -11,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.UUID;
 
+@Service
 public class FileServiceImpl implements FileService {
 
     private Logger logger= LoggerFactory.getLogger(FileServiceImpl.class);
@@ -24,16 +27,18 @@ public class FileServiceImpl implements FileService {
         String filenameWithExtension=filename+extension;
         String fullPathWithFileName=path+filenameWithExtension;
                                       //don't need to use File.separator between bcz we have used in properties file
+        logger.info("Full Image Path: {}",fullPathWithFileName);
         if(extension.equalsIgnoreCase(".png")||
                 extension.equalsIgnoreCase(".jpg")||
                 extension.equalsIgnoreCase("jpeg"))
         {
             //file save
+            logger.info("File extension is: {}",extension);
             File folder=new File(path);
             if(!folder.exists())
             {
                 //create folder
-                folder.mkdirs();
+                folder.mkdirs(); //used when we want to create folder in level ex image/user
             }
             //upload file
             Files.copy(file.getInputStream(), Paths.get(fullPathWithFileName));
@@ -41,7 +46,7 @@ public class FileServiceImpl implements FileService {
         }
         else
         {
-            throw new BadApiException("File with this "+extension+" not allowed");
+            throw new BadApiException(ApiConstant.FILE_NOT_ALLOWED+extension);
         }
     }
 

@@ -55,7 +55,7 @@ public class GlobalExceptionHandler {
         logger.info("BadApiExceptionHandler invoked");
         ApiResponse apiResponse = ApiResponse.builder()
                 .message(ex.getMessage())
-                .success(true)
+                .success(false)
                 .status(HttpStatus.BAD_REQUEST)
                 .build();
 

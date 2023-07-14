@@ -8,4 +8,6 @@ public class ApiConstant {
     public static final String PAGE_SIZE="3";
     public static final String NAME="name";
     public static final String ASC="asc";
+    public static final String UPLOAD_IMAGE="Image uploaded successfully : ";
+    public static final String FILE_NOT_ALLOWED="File not allowed of this extension : ";
 }
