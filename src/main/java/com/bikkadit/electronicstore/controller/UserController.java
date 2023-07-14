@@ -78,8 +78,7 @@ public class UserController {
      * @return message
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse> deleteUser(@PathVariable String id)
-    {
+    public ResponseEntity<ApiResponse> deleteUser(@PathVariable String id) throws IOException {
         logger.info("Initiated request for delete User details with id:{}",id);
         this.userService.deleteUser(id);
         logger.info("Completed request for delete User details with id:{}",id);
