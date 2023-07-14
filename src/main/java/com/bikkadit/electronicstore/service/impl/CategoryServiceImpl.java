@@ -17,8 +17,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -69,7 +67,7 @@ public class CategoryServiceImpl implements CategoryService {
     public PageableResponse<CategoryDto> getAll(int pageNumber,int pageSize,String sortBy,String sortDir) {
         //by ternary operator
         Sort sort = (sortDir.equalsIgnoreCase("desc")) ? (Sort.by(sortBy).descending()) : (Sort.by(sortBy).ascending());
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+        Pageable pageable = PageRequest.of(pageNumber-1, pageSize, sort);
         logger.info("Request sent to Category Repository to get all Category's details");
         Page<Category> page = this.categoryRepository.findAll(pageable);
         logger.info("All Category's details fetched successfully");
