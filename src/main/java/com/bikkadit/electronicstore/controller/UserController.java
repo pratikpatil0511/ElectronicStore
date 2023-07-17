@@ -161,13 +161,15 @@ public class UserController {
             @PathVariable String userId
             ) throws IOException
     {
+        logger.info("Initiated request for upload image for User with id:{} ",userId);
         String imageName = this.fileService.uploadFile(image, imageUploadPath);
+        logger.info("Completed request for upload image for User with id:{} ",userId);
         UserDto userDto = this.userService.getUserById(userId);
         userDto.setImageName(imageName);
         this.userService.updateUser(userId,userDto);
         ImageResponse imageResponse = ImageResponse.builder()
                 .imageName(imageName)
-                .message(ApiConstant.UPLOAD_IMAGE)
+                .message(ApiConstant.UPLOAD_IMAGE+imageName)
                 .success(true)
                 .status(HttpStatus.CREATED)
                 .build();

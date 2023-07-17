@@ -23,20 +23,17 @@ public class ProductDto {
     @NotEmpty
     private String description;
 
-    @NotBlank
     private int price;
 
     private int discountedPrice;
 
-    @NotBlank
     private int quantity;
 
     private Date addedDate;
 
-    @NotBlank
     private boolean live;
 
-    @NotBlank
     private boolean stock;
 
+    private String imageName;
 }

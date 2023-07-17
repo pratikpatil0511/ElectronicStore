@@ -16,4 +16,5 @@ public class ApiConstant {
     public static final String PRODUCT_NOT_FOUND="Product not found of id : ";
     public static final String DELETE_PRODUCT="Product deleted successfully of id : ";
     public static final String PRODUCT_PRICE="price";
+    public static final String PRODUCT_IMAGE="Image uploaded successfully : ";
 }

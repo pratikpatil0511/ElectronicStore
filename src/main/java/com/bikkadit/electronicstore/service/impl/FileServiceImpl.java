@@ -30,7 +30,7 @@ public class FileServiceImpl implements FileService {
         logger.info("Full Image Path: {}",fullPathWithFileName);
         if(extension.equalsIgnoreCase(".png")||
                 extension.equalsIgnoreCase(".jpg")||
-                extension.equalsIgnoreCase("jpeg"))
+                extension.equalsIgnoreCase(".jpeg"))
         {
             //file save
             logger.info("File extension is: {}",extension);

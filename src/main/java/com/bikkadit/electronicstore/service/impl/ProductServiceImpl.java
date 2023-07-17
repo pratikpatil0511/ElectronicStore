@@ -19,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.UUID;
 
 @Service
@@ -34,8 +35,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDto create(ProductDto productDto) {
+        //add Id
         String productId = UUID.randomUUID().toString();
         productDto.setId(productId);
+        //add Date
+        productDto.setAddedDate(new Date());
         Product product = this.modelMapper.map(productDto, Product.class);
         logger.info("Request sent to Product Repository to save Product details");
         Product savedProduct = this.productRepository.save(product);
@@ -54,6 +58,7 @@ public class ProductServiceImpl implements ProductService {
         product.setQuantity(productDto.getQuantity());
         product.setLive(productDto.isLive());
         product.setStock(productDto.isStock());
+        product.setImageName(productDto.getImageName());
         logger.info("Request sent to Product Repository to update Product details");
         Product updatedProduct = this.productRepository.save(product);
         logger.info("Product details updated successfully");
@@ -108,7 +113,7 @@ public class ProductServiceImpl implements ProductService {
     public PageableResponse<ProductDto> searchByTitle(String keywords,int pageNumber, int pageSize, String sortBy,String sortDir)
     {
         Sort sort = (sortDir.equalsIgnoreCase("desc")) ? (Sort.by(sortBy).descending()) : (Sort.by(sortBy).ascending());
-        Pageable pageable=PageRequest.of(pageNumber,pageSize,sort);
+        Pageable pageable=PageRequest.of(pageNumber-1,pageSize,sort);
         logger.info("Request sent to Product Repository to get all Product's details with subTitle:{} ",keywords);
         Page<Product> page = this.productRepository.findByTitleContaining(pageable, keywords);
         logger.info("All Product's details fetched successfully with subTitle:{} ",keywords);
