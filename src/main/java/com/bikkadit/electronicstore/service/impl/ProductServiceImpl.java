@@ -162,9 +162,9 @@ public class ProductServiceImpl implements ProductService {
         Product product = this.modelMapper.map(productDto, Product.class);
         //add Category
         product.setCategory(category);
-        logger.info("Request sent to Product Repository to save Product details with Category");
+        logger.info("Request sent to Product Repository to save Product details with Category id : {}",categoryId);
         Product savedProduct = this.productRepository.save(product);
-        logger.info("Product details with Category saved successfully");
+        logger.info("Product details saved successfully with Category id : {}",categoryId);
         return this.modelMapper.map(savedProduct, ProductDto.class);
     }
 
@@ -179,5 +179,18 @@ public class ProductServiceImpl implements ProductService {
         Product updatedProduct = this.productRepository.save(product);
         logger.info("Category updated successfully in Product details");
         return this.modelMapper.map(updatedProduct,ProductDto.class);
+    }
+
+    @Override
+    public PageableResponse<ProductDto> getCategoryProducts(String categoryId,int pageNumber, int pageSize, String sortBy,String sortDir) {
+        Category category = this.categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new ResourceNotFoundException(ApiConstant.CATEGORY_NOT_FOUND + categoryId));
+        Sort sort = (sortDir.equalsIgnoreCase("desc")) ? (Sort.by(sortBy).descending()) : (Sort.by(sortBy)).ascending();
+        Pageable pageable=PageRequest.of(pageNumber,pageSize,sort);
+        logger.info("Request sent to Product Repository to fetch Products of Category id : {}",categoryId);
+        Page<Product> page = this.productRepository.findByCategory(pageable, category);
+        logger.info("All Products fetched successfully of Category id : {}",categoryId);
+        PageableResponse<ProductDto> pageableResponse = PageHelper.getPageableResponse(page, ProductDto.class);
+        return pageableResponse;
     }
 }

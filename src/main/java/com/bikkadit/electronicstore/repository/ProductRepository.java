@@ -1,5 +1,6 @@
 package com.bikkadit.electronicstore.repository;
 
+import com.bikkadit.electronicstore.entity.Category;
 import com.bikkadit.electronicstore.entity.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,4 +15,7 @@ public interface ProductRepository extends JpaRepository<Product,String> {
 
     //returns all products with live value 'True'
    Page<Product> findByLiveTrue(Pageable pageable);
+
+   //returns all products of Category
+    Page<Product> findByCategory(Pageable pageable, Category category);
 }

@@ -3,6 +3,8 @@ package com.bikkadit.electronicstore.service;
 import com.bikkadit.electronicstore.dto.ProductDto;
 import com.bikkadit.electronicstore.helper.PageableResponse;
 
+import java.util.List;
+
 public interface ProductService {
 
     //create
@@ -31,4 +33,6 @@ public interface ProductService {
 
     //update Category of Product
     ProductDto updateCategory(String categoryId,String productId);
+
+    PageableResponse<ProductDto> getCategoryProducts(String categoryId,int pageNumber, int pageSize, String sortBy,String sortDir);
 }
