@@ -2,9 +2,11 @@ package com.bikkadit.electronicstore.controller;
 
 import com.bikkadit.electronicstore.constant.ApiConstant;
 import com.bikkadit.electronicstore.dto.CategoryDto;
+import com.bikkadit.electronicstore.dto.ProductDto;
 import com.bikkadit.electronicstore.helper.ApiResponse;
 import com.bikkadit.electronicstore.helper.PageableResponse;
 import com.bikkadit.electronicstore.service.CategoryService;
+import com.bikkadit.electronicstore.service.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,9 @@ public class CategoryController {
     private CategoryService categoryService;
 
     private static Logger logger= LoggerFactory.getLogger(CategoryController.class);
+
+    @Autowired
+    private ProductService productService;
 
     @PostMapping
     public ResponseEntity<CategoryDto> create(@Valid @RequestBody CategoryDto categoryDto)
@@ -76,5 +81,15 @@ public class CategoryController {
         CategoryDto categoryDto = this.categoryService.getById(id);
         logger.info("Completed request for get User details with id: {}",id);
         return new ResponseEntity<>(categoryDto,HttpStatus.OK);
+    }
+
+    //create Product with Category
+
+    @PostMapping("/{categoryId}/products")
+    public ResponseEntity<ProductDto> createProductWithCategory(
+            @Valid @RequestBody ProductDto productDto,@PathVariable String categoryId)
+    {
+        ProductDto productWithCategory = this.productService.createWithCategory(productDto, categoryId);
+        return new ResponseEntity<>(productWithCategory,HttpStatus.CREATED);
     }
 }

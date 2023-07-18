@@ -3,10 +3,12 @@ package com.bikkadit.electronicstore.service.impl;
 import com.bikkadit.electronicstore.constant.ApiConstant;
 import com.bikkadit.electronicstore.dto.ProductDto;
 import com.bikkadit.electronicstore.dto.UserDto;
+import com.bikkadit.electronicstore.entity.Category;
 import com.bikkadit.electronicstore.entity.Product;
 import com.bikkadit.electronicstore.exception.ResourceNotFoundException;
 import com.bikkadit.electronicstore.helper.PageHelper;
 import com.bikkadit.electronicstore.helper.PageableResponse;
+import com.bikkadit.electronicstore.repository.CategoryRepository;
 import com.bikkadit.electronicstore.repository.ProductRepository;
 import com.bikkadit.electronicstore.service.ProductService;
 import org.modelmapper.ModelMapper;
@@ -37,6 +39,9 @@ public class ProductServiceImpl implements ProductService {
     private ModelMapper modelMapper;
 
     private static Logger logger= LoggerFactory.getLogger(ProductServiceImpl.class);
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Value("${product.image.path}")
     private String imagePath;
@@ -143,5 +148,23 @@ public class ProductServiceImpl implements ProductService {
 
         PageableResponse<ProductDto> pageableResponse = PageHelper.getPageableResponse(page, ProductDto.class);
         return pageableResponse;
+    }
+
+    @Override
+    public ProductDto createWithCategory(ProductDto productDto, String categoryId) {
+        Category category = this.categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new ResourceNotFoundException(ApiConstant.CATEGORY_NOT_FOUND + categoryId));
+        //add Id
+        String productId = UUID.randomUUID().toString();
+        productDto.setId(productId);
+        //add Date
+        productDto.setAddedDate(new Date());
+        Product product = this.modelMapper.map(productDto, Product.class);
+        //add Category
+        product.setCategory(category);
+        logger.info("Request sent to Product Repository to save Product details with Category");
+        Product savedProduct = this.productRepository.save(product);
+        logger.info("Product details with Category saved successfully");
+        return this.modelMapper.map(savedProduct, ProductDto.class);
     }
 }

@@ -36,4 +36,6 @@ public class ProductDto {
     private boolean stock;
 
     private String imageName;
+
+    private CategoryDto category;
 }
