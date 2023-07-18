@@ -75,11 +75,11 @@ public class UserServiceImpl implements UserService {
         try {
             Path path = Paths.get(fullPath);
             Files.delete(path);
-            logger.info("Image deleted successfully of id : {}",id);
+            logger.info("Image deleted successfully : {}",user.getImageName());
         }
         catch(NoSuchFileException ex)
         {
-            logger.info("Image not found in folder of id : {}",id);
+            logger.info("Image not found in folder : {}",user.getImageName());
             ex.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();

@@ -13,12 +13,17 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
 import java.util.Date;
 import java.util.UUID;
 
@@ -32,6 +37,9 @@ public class ProductServiceImpl implements ProductService {
     private ModelMapper modelMapper;
 
     private static Logger logger= LoggerFactory.getLogger(ProductServiceImpl.class);
+
+    @Value("${product.image.path}")
+    private String imagePath;
 
     @Override
     public ProductDto create(ProductDto productDto) {
@@ -69,6 +77,21 @@ public class ProductServiceImpl implements ProductService {
     public void delete(String productId) {
         Product product = this.productRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException(ApiConstant.PRODUCT_NOT_FOUND + productId));
+        String fullImagePath=imagePath+product.getImageName();
+        Path path=Path.of(fullImagePath);
+        try
+        {
+            Files.delete(path);
+            logger.info("Image deleted successfully : {}",product.getImageName());
+        }
+        catch(NoSuchFileException ex)
+        {
+            logger.info("Image not found in folder : {}",product.getImageName());
+        }
+        catch (IOException e)
+        {
+           e.printStackTrace();
+        }
         logger.info("Request sent to Product Repository to delete Product details with id:{} ",productId);
         this.productRepository.delete(product);
         logger.info("Product details deleted successfully with id:{} ",productId);
