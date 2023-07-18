@@ -84,12 +84,19 @@ public class CategoryController {
     }
 
     //create Product with Category
-
     @PostMapping("/{categoryId}/products")
     public ResponseEntity<ProductDto> createProductWithCategory(
             @Valid @RequestBody ProductDto productDto,@PathVariable String categoryId)
     {
         ProductDto productWithCategory = this.productService.createWithCategory(productDto, categoryId);
         return new ResponseEntity<>(productWithCategory,HttpStatus.CREATED);
+    }
+
+    //update Category of Product
+    @PutMapping("/{categoryId}/products/{productId}")
+    public ResponseEntity<ProductDto> updateProductCategory(@PathVariable String categoryId,@PathVariable String productId)
+    {
+        ProductDto productDto = this.productService.updateCategory(categoryId, productId);
+        return new ResponseEntity<>(productDto,HttpStatus.CREATED);
     }
 }
