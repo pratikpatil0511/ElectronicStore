@@ -2,10 +2,7 @@ package com.bikkadit.electronicstore.entity;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -42,4 +39,9 @@ public class Product {
     private boolean stock;
 
     private String imageName;
+
+    //mapping with Category
+    @ManyToOne(fetch = FetchType.EAGER) //when we fetch Product then also Category will be fetched also
+    @JoinColumn(name = "productCategory")
+    private Category category;
 }
