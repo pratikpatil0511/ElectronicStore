@@ -39,6 +39,12 @@ public class ProductController {
     @Value("${product.image.path}")
     private String imagePath;
 
+    /**
+     * @author Pratik Patil[P0511]
+     * @apiNote This api is for save Product details
+     * @param productDto
+     * @return
+     */
     @PostMapping
     public ResponseEntity<ProductDto> create(@Valid @RequestBody ProductDto productDto)
     {
@@ -48,6 +54,13 @@ public class ProductController {
         return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
     }
 
+    /**
+     * @author Pratik Patil[P0511]
+     * @apiNote This api is for update Product details
+     * @param id
+     * @param productDto
+     * @return
+     */
     @PutMapping("/{id}")
     public ResponseEntity<ProductDto> update(@PathVariable String id,@Valid @RequestBody ProductDto productDto)
     {
@@ -57,6 +70,12 @@ public class ProductController {
         return new ResponseEntity<>(updatedProduct,HttpStatus.CREATED);
     }
 
+    /**
+     * @author Pratik Patil[P0511]
+     * @apiNote This api is for delete Product details by using id
+     * @param productId
+     * @return
+     */
     @DeleteMapping("/{productId}")
     public ResponseEntity<ApiResponse> delete(@PathVariable String productId)
     {
@@ -70,6 +89,12 @@ public class ProductController {
         return new ResponseEntity<>(apiResponse,HttpStatus.OK);
     }
 
+    /**
+     * @author Pratik Patil[P0511]
+     * @apiNote This api is for get Product details by using id
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     public ResponseEntity<ProductDto> getById(@PathVariable String id)
     {
@@ -79,6 +104,15 @@ public class ProductController {
         return new ResponseEntity<>(productDto,HttpStatus.OK);
     }
 
+    /**
+     * @author Pratik Patil[P0511]
+     * @apiNote This api is for get all Product's details
+     * @param pageNumber
+     * @param pageSize
+     * @param sortBy
+     * @param sortDir
+     * @return
+     */
     @GetMapping
     public ResponseEntity<PageableResponse<ProductDto>> getAll(
             @RequestParam(value="pageNumber",defaultValue = ApiConstant.PAGE_NUMBER,required = false) int pageNumber,
@@ -93,6 +127,15 @@ public class ProductController {
         return new ResponseEntity<>(allProduct,HttpStatus.OK);
     }
 
+    /**
+     * @author Pratik Patil[P0511]
+     * @apiNote This api is for get all live Product's details
+     * @param pageNumber
+     * @param pageSize
+     * @param sortBy
+     * @param sortDir
+     * @return
+     */
     @GetMapping("/live")
     public ResponseEntity<PageableResponse<ProductDto>> getAllLive(
             @RequestParam(value="pageNumber",defaultValue = ApiConstant.PAGE_NUMBER,required = false) int pageNumber,
@@ -107,6 +150,16 @@ public class ProductController {
         return new ResponseEntity<>(allLiveProduct,HttpStatus.OK);
     }
 
+    /**
+     * @author Pratik Patil[P0511]
+     * @apiNote This api is for search Products by subTitle
+     * @param subTitle
+     * @param pageNumber
+     * @param pageSize
+     * @param sortBy
+     * @param sortDir
+     * @return
+     */
     @GetMapping("/search/{subTitle}")
     public ResponseEntity<PageableResponse<ProductDto>> getBySubTitle(
             @PathVariable String subTitle,
@@ -122,6 +175,14 @@ public class ProductController {
         return new ResponseEntity<>(bySubTitle,HttpStatus.OK);
     }
 
+    /**
+     * @author Pratik Patil[P0511]
+     * @apiNote This api is for upload image for Product
+     * @param productId
+     * @param file
+     * @return
+     * @throws IOException
+     */
     @PostMapping("/productImage/{productId}")
     public ResponseEntity<ImageResponse> uploadImage(
             @PathVariable String productId,
@@ -144,6 +205,13 @@ public class ProductController {
         return new ResponseEntity<>(imageResponse,HttpStatus.CREATED);
     }
 
+    /**
+     * @author Pratik Patil[P0511]
+     * @apiNote This api is for get image of Product
+     * @param id
+     * @param response
+     * @throws IOException
+     */
     @GetMapping("/getProductImage/{id}")
     public void serveProductImage(@PathVariable String id, HttpServletResponse response) throws IOException
     {

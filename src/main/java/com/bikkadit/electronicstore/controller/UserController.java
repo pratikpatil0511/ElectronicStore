@@ -155,6 +155,14 @@ public class UserController {
         return new ResponseEntity<>(userDtos,HttpStatus.OK);
     }
 
+    /**
+     * @author Pratik Patil[P0511]
+     * @apiNote This api is for upload image for User
+     * @param image
+     * @param userId
+     * @return ImageResponse
+     * @throws IOException
+     */
     @PostMapping("/image/{userId}")
     public ResponseEntity<ImageResponse> uploadUserImage(
             @RequestParam("userImage") MultipartFile image,
@@ -176,6 +184,13 @@ public class UserController {
         return new ResponseEntity<>(imageResponse,HttpStatus.CREATED);
     }
 
+    /**
+     * @author Pratik Patil[P0511]
+     * @apiNote This api is for get image of User
+     * @param userId
+     * @param response
+     * @throws IOException
+     */
     @GetMapping("/getImage/{userId}")
     public void serveUserImage(@PathVariable String userId, HttpServletResponse response) throws IOException
     {

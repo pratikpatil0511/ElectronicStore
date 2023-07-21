@@ -28,6 +28,12 @@ public class CategoryController {
     @Autowired
     private ProductService productService;
 
+    /**
+     * @author Pratik Patil[P0511]
+     * @apiNote This api is for save new Category details
+     * @param categoryDto
+     * @return
+     */
     @PostMapping
     public ResponseEntity<CategoryDto> create(@Valid @RequestBody CategoryDto categoryDto)
     {
@@ -37,6 +43,13 @@ public class CategoryController {
         return new ResponseEntity<>(savedCategory, HttpStatus.CREATED);
     }
 
+    /**
+     * @author Pratik Patil[P0511]
+     * @apiNote This api is for update Category details
+     * @param id
+     * @param categoryDto
+     * @return
+     */
     @PutMapping("/{id}")
     public ResponseEntity<CategoryDto> update(@PathVariable String id,@Valid @RequestBody CategoryDto categoryDto)
     {
@@ -46,6 +59,12 @@ public class CategoryController {
         return new ResponseEntity<>(updatedCategory,HttpStatus.CREATED);
     }
 
+    /**
+     * @author Pratik Patil[P0511]
+     * @apiNote This api is for delete  Category details by using id
+     * @param id
+     * @return
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse> delete(@PathVariable String id)
     {
@@ -60,6 +79,15 @@ public class CategoryController {
         return new ResponseEntity<>(apiResponse,HttpStatus.OK);
     }
 
+    /**
+     * @author Pratik Patil[P0511]
+     * @apiNote This api is for get all Category's details
+     * @param pageNumber
+     * @param pageSize
+     * @param sortBy
+     * @param sortDir
+     * @return
+     */
     @GetMapping
     public ResponseEntity<PageableResponse<CategoryDto>> getAll(
             @RequestParam(value="pageNumber",defaultValue = ApiConstant.PAGE_NUMBER,required = false) int pageNumber,
@@ -74,6 +102,12 @@ public class CategoryController {
         return new ResponseEntity<>(pageableResponse,HttpStatus.OK);
     }
 
+    /**
+     * @author Pratik Patil[P0511]
+     * @apiNote This api is for get Category details by using id
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     public ResponseEntity<CategoryDto> getById(@PathVariable String id)
     {
@@ -83,7 +117,14 @@ public class CategoryController {
         return new ResponseEntity<>(categoryDto,HttpStatus.OK);
     }
 
-    //create Product with Category
+
+    /**
+     * @author Pratik Patil[P0511]
+     * @apiNote This api is for save Product details with Category
+     * @param productDto
+     * @param categoryId
+     * @return
+     */
     @PostMapping("/{categoryId}/products")
     public ResponseEntity<ProductDto> createProductWithCategory(
             @Valid @RequestBody ProductDto productDto,@PathVariable String categoryId)
@@ -94,7 +135,14 @@ public class CategoryController {
         return new ResponseEntity<>(productWithCategory,HttpStatus.CREATED);
     }
 
-    //update Category of Product
+
+    /**
+     * @author Pratik Patil[P0511]
+     * @apiNote This api is for update Category details of Product
+     * @param categoryId
+     * @param productId
+     * @return
+     */
     @PutMapping("/{categoryId}/products/{productId}")
     public ResponseEntity<ProductDto> updateProductCategory(@PathVariable String categoryId,@PathVariable String productId)
     {
@@ -104,7 +152,17 @@ public class CategoryController {
         return new ResponseEntity<>(productDto,HttpStatus.CREATED);
     }
 
-    //get Products of Category
+
+    /**
+     * @author Pratik Patil[P0511]
+     * @apiNote This api is for get all Products of a Category
+     * @param categoryId
+     * @param pageNumber
+     * @param pageSize
+     * @param sortBy
+     * @param sortDir
+     * @return
+     */
     @GetMapping("/{categoryId}/products")
     public ResponseEntity<PageableResponse<ProductDto>> getProductsOfCategory(
             @PathVariable String categoryId,
