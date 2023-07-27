@@ -36,9 +36,9 @@ public class CategoryServiceImpl implements CategoryService {
         categoryDto.setId(categoryId);
         Category category = this.modelMapper.map(categoryDto, Category.class);
         logger.info("Request sent to Category Repository to save Category details");
-        this.categoryRepository.save(category);
+        Category savedCategory = this.categoryRepository.save(category);
         logger.info("Category details saved successfully");
-        return this.modelMapper.map(category, CategoryDto.class);
+        return this.modelMapper.map(savedCategory, CategoryDto.class);
     }
 
     @Override
@@ -49,9 +49,9 @@ public class CategoryServiceImpl implements CategoryService {
         category.setDescription((categoryDto.getDescription()));
         category.setCoverImage(categoryDto.getCoverImage());
         logger.info("Request sent to Category Repository to update Category details");
-        this.categoryRepository.save(category);
+        Category updatedCategory = this.categoryRepository.save(category);
         logger.info("Category details updated successfully");
-        return this.modelMapper.map(category,CategoryDto.class);
+        return this.modelMapper.map(updatedCategory,CategoryDto.class);
     }
 
     @Override

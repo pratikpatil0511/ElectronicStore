@@ -47,9 +47,9 @@ public class UserServiceImpl implements UserService {
         userDto.setId(uid);
         User user = this.modelMapper.map(userDto, User.class);
         logger.info("Request sent to User Repository to save User details");
-        this.userRepository.save(user);
+        User savedUser = this.userRepository.save(user);
         logger.info("User details saved successfully");
-        return this.modelMapper.map(user,UserDto.class);
+        return this.modelMapper.map(savedUser,UserDto.class);
     }
 
     @Override
@@ -62,9 +62,9 @@ public class UserServiceImpl implements UserService {
         user.setPassword(userDto.getPassword());
         user.setImageName(userDto.getImageName());
         logger.info("Request sent to User Repository to update User details");
-        this.userRepository.save(user);
+        User updatedUser = this.userRepository.save(user);
         logger.info("User details updated successfully");
-        return this.modelMapper.map(user,UserDto.class);
+        return this.modelMapper.map(updatedUser,UserDto.class);
     }
 
     @Override
