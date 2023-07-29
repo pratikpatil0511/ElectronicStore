@@ -162,4 +162,16 @@ public class UserServiceTest
         Assertions.assertEquals(user.getName(),userDto.getName(),"name not matched : test case failed");
         Assertions.assertNotNull(userDto);
     }
+
+    @Test
+    public void getUserByEmail()
+    {
+        Mockito.when(userRepository.findByEmail("pratik@gmail.com")).thenReturn(Optional.of(user));
+
+        String userEmail="pratik@gmail.com";
+        UserDto userDto = userService.getUserByEmail(userEmail);
+
+        Assertions.assertNotNull(userDto);
+        Assertions.assertEquals(user.getImageName(),userDto.getImageName(),"imageName not matched : test case failed");
+    }
 }
