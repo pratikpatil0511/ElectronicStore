@@ -118,7 +118,8 @@ public class UserServiceTest
     }
 
     @Test
-    public void getAllUsersTest(){
+    public void getAllUsersTest()
+    {
 
         User user1 = User.builder()
                 .name("Vikram")
@@ -148,5 +149,17 @@ public class UserServiceTest
 
         Assertions.assertEquals(3,page.getContent().size());
         Assertions.assertEquals(3,allUsers.getContent().size());
+    }
+
+    @Test
+    public void getUserByIdTest()
+    {
+        Mockito.when(userRepository.findById("panu123")).thenReturn(Optional.of(user));
+
+        String userId="panu123";
+        UserDto userDto = userService.getUserById(userId);
+
+        Assertions.assertEquals(user.getName(),userDto.getName(),"name not matched : test case failed");
+        Assertions.assertNotNull(userDto);
     }
 }
