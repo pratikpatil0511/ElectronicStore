@@ -174,4 +174,36 @@ public class UserServiceTest
         Assertions.assertNotNull(userDto);
         Assertions.assertEquals(user.getImageName(),userDto.getImageName(),"imageName not matched : test case failed");
     }
+
+    @Test
+    public void searchUsersTest()
+    {
+        User user1 = User.builder()
+                .name("Vikram")
+                .email("Vikram@gmail.com")
+                .gender("male")
+                .about("I am a Software Engineer")
+                .imageName("vikram.png")
+                .password("Vikram@123")
+                .build();
+
+        User user2 = User.builder()
+                .name("Vivek")
+                .email("vivek@gmail.com")
+                .gender("male")
+                .about("I am a Student")
+                .imageName("vivek.png")
+                .password("Vivek@123")
+                .build();
+
+        List<User> userList = List.of(user, user1, user2);
+
+        Mockito.when(userRepository.findByNameContaining("k")).thenReturn(userList);
+
+        String keywords="k";
+        List<UserDto> userDtos = userService.searchUsers(keywords);
+
+        Assertions.assertNotNull(userDtos);
+        Assertions.assertEquals(3,userDtos.size(),"size is not same : test case failed");
+    }
 }
