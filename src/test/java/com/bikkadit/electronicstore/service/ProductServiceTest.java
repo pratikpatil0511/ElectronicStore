@@ -113,4 +113,14 @@ public class ProductServiceTest {
 
         Mockito.verify(productRepository,Mockito.times(1)).delete(product);
     }
+
+    @Test
+    public void getProductById()
+    {
+        Mockito.when(productRepository.findById(Mockito.anyString())).thenReturn(Optional.of(product));
+        String productId="125pqr";
+        ProductDto productDto = productService.getById(productId);
+
+        Assertions.assertEquals(product.getQuantity(),productDto.getQuantity());
+    }
 }
