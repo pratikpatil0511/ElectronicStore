@@ -2,6 +2,7 @@ package com.bikkadit.electronicstore.service;
 
 import com.bikkadit.electronicstore.dto.CategoryDto;
 import com.bikkadit.electronicstore.entity.Category;
+import com.bikkadit.electronicstore.helper.PageableResponse;
 import com.bikkadit.electronicstore.repository.CategoryRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,7 +12,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -81,5 +86,36 @@ public class CategoryServiceTest {
         categoryService.delete(categoryId);
 
         Mockito.verify(categoryRepository,Mockito.times(1)).delete(category);
+    }
+
+
+    @Test
+    public void getAllCategoryTest()
+    {
+
+        Category category1 = Category.builder()
+                .id(UUID.randomUUID().toString())
+                .title("tv")
+                .description("best tv's available here")
+                .coverImage("tv.jpg")
+                .build();
+
+
+        Category category2 = Category.builder()
+                .id(UUID.randomUUID().toString())
+                .title("furniture")
+                .description("Best furniture for your home")
+                .coverImage("furniture.jpg")
+                .build();
+
+        List<Category> categoryList = List.of(category, category1, category2);
+
+        Page page=new PageImpl(categoryList);
+
+        Mockito.when(categoryRepository.findAll((Pageable) Mockito.any())).thenReturn(page);
+
+        PageableResponse<CategoryDto> allCategories = categoryService.getAll(1, 10, "title", "desc");
+
+        Assertions.assertEquals(3,allCategories.getContent().size());
     }
 }
