@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Date;
+import java.util.Optional;
 import java.util.UUID;
 
 @SpringBootTest
@@ -71,5 +72,35 @@ public class ProductServiceTest {
 
         System.out.println(productDto.getTitle());
         Assertions.assertEquals(product.getId(),productDto.getId());
+    }
+
+    @Test
+    public void updateProductTest()
+    {
+        Mockito.when(productRepository.findById(Mockito.anyString())).thenReturn(Optional.of(product));
+        Mockito.when(productRepository.save(Mockito.any())).thenReturn(product);
+
+        System.out.println("Discounted price before :"+product.getDiscountedPrice());
+
+        String productId="0511p";
+
+        ProductDto productDto = ProductDto.builder()
+                .id(UUID.randomUUID().toString())
+                .title("iPhone 14 max pro")
+                .description("this is one of the best phones in market")
+                .price(90000)
+                .discountedPrice(75000)
+                .quantity(5)
+                .addedDate(new Date())
+                .stock(true)
+                .live(true)
+                .imageName("iPhone14.jpeg")
+                .build();
+
+        ProductDto updated = productService.update(productId, productDto);
+        System.out.println("Discounted price after :"+updated.getDiscountedPrice());
+        System.out.println(updated.getTitle());
+
+        Assertions.assertEquals(product.getDiscountedPrice(),updated.getDiscountedPrice());
     }
 }
