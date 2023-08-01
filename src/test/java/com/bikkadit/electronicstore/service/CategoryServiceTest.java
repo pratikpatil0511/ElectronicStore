@@ -118,4 +118,15 @@ public class CategoryServiceTest {
 
         Assertions.assertEquals(3,allCategories.getContent().size());
     }
+
+    @Test
+    public void getCategoryByIdTest()
+    {
+        Mockito.when(categoryRepository.findById(Mockito.any())).thenReturn(Optional.of(category));
+
+        CategoryDto categoryDto = categoryService.getById("pqrs");
+
+        Assertions.assertNotNull(categoryDto);
+        Assertions.assertEquals(category.getCoverImage(),categoryDto.getCoverImage());
+    }
 }
