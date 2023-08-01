@@ -53,7 +53,7 @@ public class UserServiceTest
     @Test
     public void createUserTest()
     {
-         Mockito.when(userRepository.save(Mockito.any())).thenReturn(user);
+        Mockito.when(userRepository.save(Mockito.any())).thenReturn(user);
 
         UserDto userDto = userService.createUser(this.modelMapper.map(user, UserDto.class));
         System.out.println(userDto.getName());
