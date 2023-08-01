@@ -103,4 +103,14 @@ public class ProductServiceTest {
 
         Assertions.assertEquals(product.getDiscountedPrice(),updated.getDiscountedPrice());
     }
+
+    @Test
+    public void deleteProductTest()
+    {
+        Mockito.when(productRepository.findById(Mockito.anyString())).thenReturn(Optional.of(product));
+
+        productService.delete("123pratik");
+
+        Mockito.verify(productRepository,Mockito.times(1)).delete(product);
+    }
 }

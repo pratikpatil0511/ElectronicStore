@@ -112,6 +112,7 @@ public class UserServiceTest
 
         Mockito.when(userRepository.findById("abcd")).thenReturn(Optional.of(user1));
 
+             // we have to add image in images/users/pratik.png for smooth execution
         userService.deleteUser(userId);
 
         Mockito.verify(userRepository,Mockito.times(1)).delete(user1);
