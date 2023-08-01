@@ -3,6 +3,7 @@ package com.bikkadit.electronicstore.service;
 import com.bikkadit.electronicstore.dto.ProductDto;
 import com.bikkadit.electronicstore.entity.Category;
 import com.bikkadit.electronicstore.entity.Product;
+import com.bikkadit.electronicstore.helper.PageableResponse;
 import com.bikkadit.electronicstore.repository.ProductRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -13,10 +14,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.*;
 
-import java.util.Date;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @SpringBootTest
 public class ProductServiceTest {
@@ -122,5 +122,92 @@ public class ProductServiceTest {
         ProductDto productDto = productService.getById(productId);
 
         Assertions.assertEquals(product.getQuantity(),productDto.getQuantity());
+    }
+
+    @Test
+    public void getAllProductTest()
+    {
+        Product product1 = Product.builder()
+                .id(UUID.randomUUID().toString())
+                .title("samsung sUltra 22")
+                .description("this is one of the best phones in market")
+                .price(85000)
+                .discountedPrice(80000)
+                .quantity(25)
+                .addedDate(new Date())
+                .stock(true)
+                .live(true)
+                .imageName("sultra22.jpeg")
+                .category(category)
+                .build();
+
+        Product product2 = Product.builder()
+                .id(UUID.randomUUID().toString())
+                .title("Realme 8 5G")
+                .description("best for your budget")
+                .price(15000)
+                .discountedPrice(10000)
+                .quantity(50)
+                .addedDate(new Date())
+                .stock(true)
+                .live(true)
+                .imageName("realme8.jpeg")
+                .category(category)
+                .build();
+
+        List<Product> productList=new ArrayList<>();
+        productList.add(product);
+        productList.add(product1);
+        productList.add(product2);
+
+        Page page=new PageImpl(productList);
+
+        Mockito.when(productRepository.findAll((Pageable) Mockito.any())).thenReturn(page);
+
+        PageableResponse<ProductDto> allProduct = productService.getAll(1, 5, "price", "desc");
+
+        Assertions.assertEquals(3,allProduct.getContent().size());
+    }
+
+    @Test
+    public void searchProductByTitle()
+    {
+        Product product1 = Product.builder()
+                .id(UUID.randomUUID().toString())
+                .title("iPhone 13 max pro")
+                .description("this is one of the best phones in market")
+                .price(65000)
+                .discountedPrice(60000)
+                .quantity(25)
+                .addedDate(new Date())
+                .stock(true)
+                .live(true)
+                .imageName("iPhone14.jpeg")
+                .category(category)
+                .build();
+
+        List<Product> productList = Arrays.asList(product, product1);
+
+        Page<Product> page=new PageImpl<>(productList);
+        System.out.println(page.getTotalElements());
+
+        String sortDir="desc";
+        Sort sort;
+        if(sortDir.equalsIgnoreCase("desc"))
+        {
+            sort = Sort.by("price").descending();
+        }
+        else
+        {
+            sort=Sort.by("price").ascending();
+        }
+
+       Pageable pageable=PageRequest.of(0, 1, sort);
+       Mockito.when(productRepository.findByTitleContaining(pageable,"iPhones")).thenReturn(page);
+
+        String keywords="iPhones";
+        PageableResponse<ProductDto> searched = productService.searchByTitle(keywords, 1, 1, "price", "desc");
+
+        Assertions.assertEquals(2,searched.getContent().size(),"size is not same : test case failed");
     }
 }
