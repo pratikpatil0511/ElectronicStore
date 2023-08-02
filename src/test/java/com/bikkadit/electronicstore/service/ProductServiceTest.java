@@ -278,4 +278,18 @@ public class ProductServiceTest {
         Assertions.assertEquals(product.getCategory().getTitle(),productWithCategory.getCategory().getTitle());
 
     }
+
+    @Test
+    public void updateCategoryTest()
+    {
+        Mockito.when(categoryRepository.findById(Mockito.any())).thenReturn(Optional.of(category));
+        Mockito.when(productRepository.findById(Mockito.anyString())).thenReturn(Optional.of(product));
+        Mockito.when(productRepository.save(Mockito.any())).thenReturn(product);
+
+        String categoryId="123abc";
+        String productId="456xyz";
+        ProductDto productDto = productService.updateCategory(categoryId, productId);
+
+        Assertions.assertEquals(category.getCoverImage(),productDto.getCategory().getCoverImage());
+    }
 }
