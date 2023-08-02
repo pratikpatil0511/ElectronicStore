@@ -31,15 +31,18 @@ public class ProductServiceTest {
     @Autowired
     private ModelMapper modelMapper;
 
-    static Category category;
+    Category category;
 
     Product product;
 
+    Product product1;
+
+    Product product2;
     @MockBean
     private CategoryRepository categoryRepository;
 
-    @BeforeAll
-    public static void forCategory()
+    @BeforeEach
+    public void forCategory()
     {
         category = Category.builder()
                 .id(UUID.randomUUID().toString())
@@ -64,6 +67,48 @@ public class ProductServiceTest {
                 .live(true)
                 .imageName("iPhone14.jpeg")
                 .category(category)
+                .build();
+    }
+
+    @BeforeEach
+    public void forCategory1()
+    {
+        product1 = Product.builder()
+                .id(UUID.randomUUID().toString())
+                .title("samsung sUltra 22")
+                .description("this is one of the best phones in market")
+                .price(85000)
+                .discountedPrice(80000)
+                .quantity(25)
+                .addedDate(new Date())
+                .stock(true)
+                .live(true)
+                .imageName("sultra22.jpeg")
+                .category(category)
+                .build();
+
+        product2 = Product.builder()
+                .id(UUID.randomUUID().toString())
+                .title("Realme 8 5G")
+                .description("best for your budget")
+                .price(15000)
+                .discountedPrice(10000)
+                .quantity(50)
+                .addedDate(new Date())
+                .stock(true)
+                .live(true)
+                .imageName("realme8.jpeg")
+                .category(category)
+                .build();
+
+        List<Product> productList = List.of(product,product1, product2);
+
+        category = Category.builder()
+                .id(UUID.randomUUID().toString())
+                .title("smart phones")
+                .description("best specifications")
+                .coverImage("mobiles.png")
+                .products(productList)
                 .build();
     }
 
@@ -291,5 +336,32 @@ public class ProductServiceTest {
         ProductDto productDto = productService.updateCategory(categoryId, productId);
 
         Assertions.assertEquals(category.getCoverImage(),productDto.getCategory().getCoverImage());
+    }
+
+    @Test
+    public void getCategoryProductsTest()
+    {
+        Mockito.when(categoryRepository.findById(Mockito.anyString())).thenReturn(Optional.of(category));
+
+        String sortDir="desc";
+        Sort sort;
+        if(sortDir.equalsIgnoreCase("desc"))
+        {
+            sort = Sort.by("price").descending();
+        }
+        else
+        {
+            sort=Sort.by("price").ascending();
+        }
+
+        Pageable pageable=PageRequest.of(0,5,sort);
+        List<Product> products = List.of(product,product1, product2);
+        Page<Product> page=new PageImpl<>(products);
+        Mockito.when(productRepository.findByCategory(pageable,category)).thenReturn(page);
+
+        String categoryId="qwerty123";
+        PageableResponse<ProductDto> categoryProducts = productService.getCategoryProducts(categoryId, 0, 5, "price", "desc");
+
+        Assertions.assertNotNull(categoryProducts);
     }
 }
