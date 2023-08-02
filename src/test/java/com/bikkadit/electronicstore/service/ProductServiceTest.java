@@ -4,6 +4,7 @@ import com.bikkadit.electronicstore.dto.ProductDto;
 import com.bikkadit.electronicstore.entity.Category;
 import com.bikkadit.electronicstore.entity.Product;
 import com.bikkadit.electronicstore.helper.PageableResponse;
+import com.bikkadit.electronicstore.repository.CategoryRepository;
 import com.bikkadit.electronicstore.repository.ProductRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -33,6 +34,9 @@ public class ProductServiceTest {
     static Category category;
 
     Product product;
+
+    @MockBean
+    private CategoryRepository categoryRepository;
 
     @BeforeAll
     public static void forCategory()
@@ -210,4 +214,52 @@ public class ProductServiceTest {
 
         Assertions.assertEquals(2,searched.getContent().size(),"size is not same : test case failed");
     }
+
+    @Test
+    public void getAllLiveProductTest()
+    {
+
+        Product product1 = Product.builder()
+                .id(UUID.randomUUID().toString())
+                .title("samsung sUltra 22")
+                .description("this is one of the best phones in market")
+                .price(85000)
+                .discountedPrice(80000)
+                .quantity(25)
+                .addedDate(new Date())
+                .stock(true)
+                .live(true)
+                .imageName("sultra22.jpeg")
+                .category(category)
+                .build();
+
+        Product product2 = Product.builder()
+                .id(UUID.randomUUID().toString())
+                .title("Realme 8 5G")
+                .description("best for your budget")
+                .price(15000)
+                .discountedPrice(10000)
+                .quantity(50)
+                .addedDate(new Date())
+                .stock(true)
+                .live(true)
+                .imageName("realme8.jpeg")
+                .category(category)
+                .build();
+
+        List<Product> productList = List.of(product, product1, product2);
+        Page<Product> page=new PageImpl<>(productList);
+        String sortDir="desc";
+        String sortBy="price";
+        Sort sort = (sortDir.equalsIgnoreCase("desc")) ? (Sort.by(sortBy).descending()) : (Sort.by(sortBy).ascending());
+        Pageable pageable= PageRequest.of(0, 4, sort);
+
+        Mockito.when(productRepository.findByLiveTrue(pageable)).thenReturn(page);
+
+        PageableResponse<ProductDto> allLiveProducts = productService.getAllLive(1, 4, "price", "desc");
+
+        Assertions.assertNotNull(allLiveProducts);
+        Assertions.assertEquals(3,allLiveProducts.getContent().size());
+    }
+
 }
