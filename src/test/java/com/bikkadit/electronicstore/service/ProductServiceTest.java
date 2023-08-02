@@ -262,4 +262,20 @@ public class ProductServiceTest {
         Assertions.assertEquals(3,allLiveProducts.getContent().size());
     }
 
+
+    @Test
+    public void createProductWithCategoryTest()
+    {
+        Mockito.when(categoryRepository.findById("123xyz")).thenReturn(Optional.of(category));
+        Mockito.when(productRepository.save(Mockito.any())).thenReturn(product);
+
+        ProductDto productDto = this.modelMapper.map(product, ProductDto.class);
+        String categoryId="123xyz";
+
+        ProductDto productWithCategory = productService.createWithCategory(productDto, categoryId);
+
+        Assertions.assertNotNull(productWithCategory);
+        Assertions.assertEquals(product.getCategory().getTitle(),productWithCategory.getCategory().getTitle());
+
+    }
 }
