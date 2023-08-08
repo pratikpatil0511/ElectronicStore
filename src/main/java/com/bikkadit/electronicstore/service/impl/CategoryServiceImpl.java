@@ -32,10 +32,10 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDto createCategory(CategoryDto categoryDto) {
+        logger.info("Request sent to Category Repository to save Category details");
         String categoryId = UUID.randomUUID().toString();
         categoryDto.setId(categoryId);
         Category category = this.modelMapper.map(categoryDto, Category.class);
-        logger.info("Request sent to Category Repository to save Category details");
         Category savedCategory = this.categoryRepository.save(category);
         logger.info("Category details saved successfully");
         return this.modelMapper.map(savedCategory, CategoryDto.class);
