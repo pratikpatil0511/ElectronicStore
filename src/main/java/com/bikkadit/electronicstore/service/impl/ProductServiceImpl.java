@@ -140,9 +140,9 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public PageableResponse<ProductDto> searchProductByTitle(String keywords,int pageNumber, int pageSize, String sortBy,String sortDir)
     {
+        logger.info("Request sent to Product Repository to get all Product's details with subTitle:{} ",keywords);
         Sort sort = (sortDir.equalsIgnoreCase("desc")) ? (Sort.by(sortBy).descending()) : (Sort.by(sortBy).ascending());
         Pageable pageable=PageRequest.of(pageNumber-1,pageSize,sort);
-        logger.info("Request sent to Product Repository to get all Product's details with subTitle:{} ",keywords);
         Page<Product> page = this.productRepository.findByTitleContaining(pageable, keywords);
         logger.info("All Product's details fetched successfully with subTitle:{} ",keywords);
 
