@@ -62,6 +62,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDto updateProduct(String id, ProductDto productDto) {
+        logger.info("Request sent to Product Repository to update Product details");
         Product product = this.productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ApiConstant.PRODUCT_NOT_FOUND + id));
         product.setTitle(productDto.getTitle());
@@ -72,7 +73,6 @@ public class ProductServiceImpl implements ProductService {
         product.setLive(productDto.isLive());
         product.setStock(productDto.isStock());
         product.setImageName(productDto.getImageName());
-        logger.info("Request sent to Product Repository to update Product details");
         Product updatedProduct = this.productRepository.save(product);
         logger.info("Product details updated successfully");
         return this.modelMapper.map(updatedProduct, ProductDto.class);
