@@ -183,11 +183,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public PageableResponse<ProductDto> getCategoryProducts(String categoryId,int pageNumber, int pageSize, String sortBy,String sortDir) {
+        logger.info("Request sent to Product Repository to fetch Products of Category id : {}",categoryId);
         Category category = this.categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException(ApiConstant.CATEGORY_NOT_FOUND + categoryId));
         Sort sort = (sortDir.equalsIgnoreCase("desc")) ? (Sort.by(sortBy).descending()) : (Sort.by(sortBy)).ascending();
         Pageable pageable=PageRequest.of(pageNumber,pageSize,sort);
-        logger.info("Request sent to Product Repository to fetch Products of Category id : {}",categoryId);
         Page<Product> page = this.productRepository.findByCategory(pageable, category);
         logger.info("All Products fetched successfully of Category id : {}",categoryId);
         PageableResponse<ProductDto> pageableResponse = PageHelper.getPageableResponse(page, ProductDto.class);
