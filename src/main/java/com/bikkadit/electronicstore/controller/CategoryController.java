@@ -35,10 +35,10 @@ public class CategoryController {
      * @return
      */
     @PostMapping
-    public ResponseEntity<CategoryDto> create(@Valid @RequestBody CategoryDto categoryDto)
+    public ResponseEntity<CategoryDto> createCategory(@Valid @RequestBody CategoryDto categoryDto)
     {
         logger.info("Initiated request for save Category details");
-        CategoryDto savedCategory = this.categoryService.create(categoryDto);
+        CategoryDto savedCategory = this.categoryService.createCategory(categoryDto);
         logger.info("Completed request for save Category details");
         return new ResponseEntity<>(savedCategory, HttpStatus.CREATED);
     }
@@ -51,10 +51,10 @@ public class CategoryController {
      * @return
      */
     @PutMapping("/{id}")
-    public ResponseEntity<CategoryDto> update(@PathVariable String id,@Valid @RequestBody CategoryDto categoryDto)
+    public ResponseEntity<CategoryDto> updateCategory(@PathVariable String id,@Valid @RequestBody CategoryDto categoryDto)
     {
         logger.info("Initiated request for update Category details with id: {}",id);
-        CategoryDto updatedCategory = this.categoryService.update(id, categoryDto);
+        CategoryDto updatedCategory = this.categoryService.updateCategory(id, categoryDto);
         logger.info("Completed request for update Category details with id: {}",id);
         return new ResponseEntity<>(updatedCategory,HttpStatus.CREATED);
     }
@@ -66,10 +66,10 @@ public class CategoryController {
      * @return
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse> delete(@PathVariable String id)
+    public ResponseEntity<ApiResponse> deleteCategory(@PathVariable String id)
     {
         logger.info("Initiated request for delete Category details with id: {}",id);
-        this.categoryService.delete(id);
+        this.categoryService.deleteCategory(id);
         logger.info("Completed request for delete Category details with id: {}",id);
         ApiResponse apiResponse = ApiResponse.builder()
                 .message(ApiConstant.DELETE_CATEGORY + id)
@@ -89,7 +89,7 @@ public class CategoryController {
      * @return
      */
     @GetMapping
-    public ResponseEntity<PageableResponse<CategoryDto>> getAll(
+    public ResponseEntity<PageableResponse<CategoryDto>> getAllCategories(
             @RequestParam(value="pageNumber",defaultValue = ApiConstant.PAGE_NUMBER,required = false) int pageNumber,
             @RequestParam(value="pageSize",defaultValue = ApiConstant.PAGE_SIZE,required = false) int pageSize,
             @RequestParam(value="sortBy",defaultValue = ApiConstant.CATEGORY_TITLE,required = false) String sortBy,
@@ -97,7 +97,7 @@ public class CategoryController {
     )
     {
         logger.info("Initiated request for get all Category's details");
-        PageableResponse<CategoryDto> pageableResponse = this.categoryService.getAll(pageNumber, pageSize, sortBy, sortDir);
+        PageableResponse<CategoryDto> pageableResponse = this.categoryService.getAllCategories(pageNumber, pageSize, sortBy, sortDir);
         logger.info("Completed request for get all Category's details");
         return new ResponseEntity<>(pageableResponse,HttpStatus.OK);
     }
@@ -109,10 +109,10 @@ public class CategoryController {
      * @return
      */
     @GetMapping("/{id}")
-    public ResponseEntity<CategoryDto> getById(@PathVariable String id)
+    public ResponseEntity<CategoryDto> getCategoryById(@PathVariable String id)
     {
         logger.info("Initiated request for get User details with id: {}",id);
-        CategoryDto categoryDto = this.categoryService.getById(id);
+        CategoryDto categoryDto = this.categoryService.getCategoryById(id);
         logger.info("Completed request for get User details with id: {}",id);
         return new ResponseEntity<>(categoryDto,HttpStatus.OK);
     }
@@ -130,7 +130,7 @@ public class CategoryController {
             @Valid @RequestBody ProductDto productDto,@PathVariable String categoryId)
     {
         logger.info("Initiated request for save Product details with Category id : {}",categoryId);
-        ProductDto productWithCategory = this.productService.createWithCategory(productDto, categoryId);
+        ProductDto productWithCategory = this.productService.createProductWithCategory(productDto, categoryId);
         logger.info("Completed request for save Product details with Category id: {}",categoryId);
         return new ResponseEntity<>(productWithCategory,HttpStatus.CREATED);
     }
@@ -147,7 +147,7 @@ public class CategoryController {
     public ResponseEntity<ProductDto> updateProductCategory(@PathVariable String categoryId,@PathVariable String productId)
     {
         logger.info("Initiated request for update Category of Product : {}",productId);
-        ProductDto productDto = this.productService.updateCategory(categoryId, productId);
+        ProductDto productDto = this.productService.updateProductCategory(categoryId, productId);
         logger.info("Completed request for update Category of Product : {}",productId);
         return new ResponseEntity<>(productDto,HttpStatus.CREATED);
     }
