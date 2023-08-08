@@ -56,9 +56,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void deleteCategory(String categoryId) {
+        logger.info("Request sent to Category Repository to delete Category details with id: {}",categoryId);
         Category category = this.categoryRepository.findById(categoryId)
                         .orElseThrow(() -> new ResourceNotFoundException(ApiConstant.CATEGORY_NOT_FOUND+categoryId));
-        logger.info("Request sent to Category Repository to delete Category details with id: {}",categoryId);
         this.categoryRepository.delete(category);
         logger.info("Category details deleted successfully with id: {}",categoryId);
     }
