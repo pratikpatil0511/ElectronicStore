@@ -43,12 +43,12 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDto updateCategory(String categoryId, CategoryDto categoryDto) {
+        logger.info("Request sent to Category Repository to update Category details");
         Category category = this.categoryRepository.findById(categoryId)
                         .orElseThrow(() -> new ResourceNotFoundException(ApiConstant.CATEGORY_NOT_FOUND+categoryId));
         category.setTitle(categoryDto.getTitle());
         category.setDescription((categoryDto.getDescription()));
         category.setCoverImage(categoryDto.getCoverImage());
-        logger.info("Request sent to Category Repository to update Category details");
         Category updatedCategory = this.categoryRepository.save(category);
         logger.info("Category details updated successfully");
         return this.modelMapper.map(updatedCategory,CategoryDto.class);
