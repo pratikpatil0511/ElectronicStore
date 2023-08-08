@@ -114,9 +114,9 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public PageableResponse<ProductDto> getAllProducts(int pageNumber, int pageSize, String sortBy,String sortDir)
     {
+        logger.info("Request sent to Product Repository to get all Product's details");
         Sort sort = (sortDir.equalsIgnoreCase("desc")) ? (Sort.by(sortBy).descending()) : (Sort.by(sortBy).ascending());
         Pageable pageable= PageRequest.of(pageNumber-1,pageSize,sort);
-        logger.info("Request sent to Product Repository to get all Product's details");
         Page<Product> page = this.productRepository.findAll(pageable);
         logger.info("All Product's details fetched successfully");
 
