@@ -47,7 +47,7 @@ public class ProductServiceImpl implements ProductService {
     private String imagePath;
 
     @Override
-    public ProductDto create(ProductDto productDto) {
+    public ProductDto createProduct(ProductDto productDto) {
         //add Id
         String productId = UUID.randomUUID().toString();
         productDto.setId(productId);
@@ -61,7 +61,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDto update(String id, ProductDto productDto) {
+    public ProductDto updateProduct(String id, ProductDto productDto) {
         Product product = this.productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ApiConstant.PRODUCT_NOT_FOUND + id));
         product.setTitle(productDto.getTitle());
@@ -79,7 +79,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void delete(String productId) {
+    public void deleteProduct(String productId) {
         Product product = this.productRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException(ApiConstant.PRODUCT_NOT_FOUND + productId));
         String fullImagePath=imagePath+product.getImageName();
@@ -103,7 +103,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDto getById(String id) {
+    public ProductDto getProductById(String id) {
         logger.info("Request sent to Product Repository to get Product details with id:{} ",id);
         Product product = this.productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(ApiConstant.PRODUCT_NOT_FOUND + id));
@@ -112,7 +112,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public PageableResponse<ProductDto> getAll(int pageNumber, int pageSize, String sortBy,String sortDir)
+    public PageableResponse<ProductDto> getAllProducts(int pageNumber, int pageSize, String sortBy,String sortDir)
     {
         Sort sort = (sortDir.equalsIgnoreCase("desc")) ? (Sort.by(sortBy).descending()) : (Sort.by(sortBy).ascending());
         Pageable pageable= PageRequest.of(pageNumber-1,pageSize,sort);
@@ -125,7 +125,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public PageableResponse<ProductDto> getAllLive(int pageNumber, int pageSize, String sortBy,String sortDir)
+    public PageableResponse<ProductDto> getAllLiveProducts(int pageNumber, int pageSize, String sortBy,String sortDir)
     {
         Sort sort = (sortDir.equalsIgnoreCase("desc")) ? (Sort.by(sortBy).descending()) : (Sort.by(sortBy).ascending());
         Pageable pageable=PageRequest.of(pageNumber-1,pageSize,sort);
@@ -138,7 +138,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public PageableResponse<ProductDto> searchByTitle(String keywords,int pageNumber, int pageSize, String sortBy,String sortDir)
+    public PageableResponse<ProductDto> searchProductByTitle(String keywords,int pageNumber, int pageSize, String sortBy,String sortDir)
     {
         Sort sort = (sortDir.equalsIgnoreCase("desc")) ? (Sort.by(sortBy).descending()) : (Sort.by(sortBy).ascending());
         Pageable pageable=PageRequest.of(pageNumber-1,pageSize,sort);
@@ -151,7 +151,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDto createWithCategory(ProductDto productDto, String categoryId) {
+    public ProductDto createProductWithCategory(ProductDto productDto, String categoryId) {
         Category category = this.categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException(ApiConstant.CATEGORY_NOT_FOUND + categoryId));
         //add Id
@@ -169,7 +169,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDto updateCategory(String categoryId,String productId ) {
+    public ProductDto updateProductCategory(String categoryId,String productId ) {
         Category category = this.categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException(ApiConstant.CATEGORY_NOT_FOUND+categoryId));
         Product product = this.productRepository.findById(productId)
