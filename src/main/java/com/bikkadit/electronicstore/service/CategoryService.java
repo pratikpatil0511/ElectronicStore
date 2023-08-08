@@ -7,21 +7,21 @@ public interface CategoryService {
 
     //create
 
-    CategoryDto create(CategoryDto categoryDto);
+    CategoryDto createCategory(CategoryDto categoryDto);
 
     //update
 
-    CategoryDto update(String categoryId,CategoryDto categoryDto);
+    CategoryDto updateCategory(String categoryId,CategoryDto categoryDto);
 
     //delete
 
-    void delete(String CategoryId);
+    void deleteCategory(String CategoryId);
 
     //getAll
 
-    PageableResponse<CategoryDto> getAll(int pageNumber,int pageSize,String sortBy,String sortDir);
+    PageableResponse<CategoryDto> getAllCategories(int pageNumber,int pageSize,String sortBy,String sortDir);
 
     //get single by id
 
-    CategoryDto getById(String categoryId);
+    CategoryDto getCategoryById(String categoryId);
 }

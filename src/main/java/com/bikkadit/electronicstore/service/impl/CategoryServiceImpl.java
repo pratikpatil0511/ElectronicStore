@@ -31,7 +31,7 @@ public class CategoryServiceImpl implements CategoryService {
     private static Logger logger= LoggerFactory.getLogger(CategoryServiceImpl.class);
 
     @Override
-    public CategoryDto create(CategoryDto categoryDto) {
+    public CategoryDto createCategory(CategoryDto categoryDto) {
         String categoryId = UUID.randomUUID().toString();
         categoryDto.setId(categoryId);
         Category category = this.modelMapper.map(categoryDto, Category.class);
@@ -42,7 +42,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryDto update(String categoryId, CategoryDto categoryDto) {
+    public CategoryDto updateCategory(String categoryId, CategoryDto categoryDto) {
         Category category = this.categoryRepository.findById(categoryId)
                         .orElseThrow(() -> new ResourceNotFoundException(ApiConstant.CATEGORY_NOT_FOUND+categoryId));
         category.setTitle(categoryDto.getTitle());
@@ -55,7 +55,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void delete(String categoryId) {
+    public void deleteCategory(String categoryId) {
         Category category = this.categoryRepository.findById(categoryId)
                         .orElseThrow(() -> new ResourceNotFoundException(ApiConstant.CATEGORY_NOT_FOUND+categoryId));
         logger.info("Request sent to Category Repository to delete Category details with id: {}",categoryId);
@@ -64,7 +64,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public PageableResponse<CategoryDto> getAll(int pageNumber,int pageSize,String sortBy,String sortDir) {
+    public PageableResponse<CategoryDto> getAllCategories(int pageNumber,int pageSize,String sortBy,String sortDir) {
         //by ternary operator
         Sort sort = (sortDir.equalsIgnoreCase("desc")) ? (Sort.by(sortBy).descending()) : (Sort.by(sortBy).ascending());
         Pageable pageable = PageRequest.of(pageNumber-1, pageSize, sort);
@@ -77,7 +77,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryDto getById(String categoryId) {
+    public CategoryDto getCategoryById(String categoryId) {
         logger.info("Request sent to Category Repository to get Category details with id: {}",categoryId);
         Category category = this.categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException(ApiConstant.CATEGORY_NOT_FOUND));

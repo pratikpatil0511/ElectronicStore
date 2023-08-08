@@ -7,7 +7,6 @@ import com.bikkadit.electronicstore.helper.PageableResponse;
 import com.bikkadit.electronicstore.repository.CategoryRepository;
 import com.bikkadit.electronicstore.repository.ProductRepository;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
