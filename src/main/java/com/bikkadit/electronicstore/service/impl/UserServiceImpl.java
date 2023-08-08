@@ -54,6 +54,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto updateUser(String id, UserDto userDto) {
+        logger.info("Request sent to User Repository to update User details");
         User user = this.userRepository.findById(id)
                                        .orElseThrow(() -> new RuntimeException(ApiConstant.USER_NOT_FOUND+id));
         user.setName(userDto.getName());
@@ -61,7 +62,6 @@ public class UserServiceImpl implements UserService {
         user.setGender(userDto.getGender());
         user.setPassword(userDto.getPassword());
         user.setImageName(userDto.getImageName());
-        logger.info("Request sent to User Repository to update User details");
         User updatedUser = this.userRepository.save(user);
         logger.info("User details updated successfully");
         return this.modelMapper.map(updatedUser,UserDto.class);
