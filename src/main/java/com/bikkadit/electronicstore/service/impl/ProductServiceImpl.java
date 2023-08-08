@@ -48,13 +48,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDto createProduct(ProductDto productDto) {
+        logger.info("Request sent to Product Repository to save Product details");
         //add Id
         String productId = UUID.randomUUID().toString();
         productDto.setId(productId);
         //add Date
         productDto.setAddedDate(new Date());
         Product product = this.modelMapper.map(productDto, Product.class);
-        logger.info("Request sent to Product Repository to save Product details");
         Product savedProduct = this.productRepository.save(product);
         logger.info("Product details saved successfully");
         return this.modelMapper.map(savedProduct, ProductDto.class);
