@@ -69,6 +69,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(String id) {
+        logger.info("Request sent to User Repository to delete User details with id:{}"+id);
         User user = this.userRepository.findById(id)
                                        .orElseThrow(() -> new ResourceNotFoundException(ApiConstant.USER_NOT_FOUND+id));
         String fullPath = imagePath + user.getImageName();
@@ -84,7 +85,6 @@ public class UserServiceImpl implements UserService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        logger.info("Request sent to User Repository to delete User details with id:{}"+id);
         this.userRepository.delete(user);
         logger.info("User details deleted successfully with id:{}"+id);
     }
