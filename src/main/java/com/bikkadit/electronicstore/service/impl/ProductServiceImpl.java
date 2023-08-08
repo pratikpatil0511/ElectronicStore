@@ -170,12 +170,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDto updateProductCategory(String categoryId,String productId ) {
+        logger.info("Request sent to Product Repository to update Category in Product details");
         Category category = this.categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException(ApiConstant.CATEGORY_NOT_FOUND+categoryId));
         Product product = this.productRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException(ApiConstant.PRODUCT_NOT_FOUND+productId));
         product.setCategory(category);
-        logger.info("Request sent to Product Repository to update Category in Product details");
         Product updatedProduct = this.productRepository.save(product);
         logger.info("Category updated successfully in Product details");
         return this.modelMapper.map(updatedProduct,ProductDto.class);
