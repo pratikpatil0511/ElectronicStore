@@ -42,11 +42,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto createUser(UserDto userDto) {
+        logger.info("Request sent to User Repository to save User details");
        //generating unique id
         String uid = UUID.randomUUID().toString();
         userDto.setId(uid);
         User user = this.modelMapper.map(userDto, User.class);
-        logger.info("Request sent to User Repository to save User details");
         User savedUser = this.userRepository.save(user);
         logger.info("User details saved successfully");
         return this.modelMapper.map(savedUser,UserDto.class);
