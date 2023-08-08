@@ -91,6 +91,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public PageableResponse<UserDto> getAllUsers(int pageNumber, int pageSize, String sortBy, String sortDir) {
+        logger.info("Request sent to User Repository to get all User's details");
         Sort sort;
         if(sortDir.equalsIgnoreCase("desc"))
         {
@@ -101,7 +102,6 @@ public class UserServiceImpl implements UserService {
             sort=Sort.by(sortBy).ascending();
         }
         Pageable pageable= PageRequest.of(pageNumber-1,pageSize,sort); //byDefault first pageNo is 0
-        logger.info("Request sent to User Repository to get all User's details");
         Page<User> page = this.userRepository.findAll(pageable);
         logger.info("All User's details fetched successfully");
 
