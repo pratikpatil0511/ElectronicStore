@@ -46,10 +46,10 @@ public class ProductController {
      * @return
      */
     @PostMapping
-    public ResponseEntity<ProductDto> create(@Valid @RequestBody ProductDto productDto)
+    public ResponseEntity<ProductDto> createProduct(@Valid @RequestBody ProductDto productDto)
     {
         logger.info("Initiated request for save Product details");
-        ProductDto savedProduct = this.productService.create(productDto);
+        ProductDto savedProduct = this.productService.createProduct(productDto);
         logger.info("Completed request for save Product details");
         return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
     }
@@ -62,10 +62,10 @@ public class ProductController {
      * @return
      */
     @PutMapping("/{id}")
-    public ResponseEntity<ProductDto> update(@PathVariable String id,@Valid @RequestBody ProductDto productDto)
+    public ResponseEntity<ProductDto> updateProduct(@PathVariable String id,@Valid @RequestBody ProductDto productDto)
     {
         logger.info("Initiated request for update Product details with id: {}",id);
-        ProductDto updatedProduct = this.productService.update(id, productDto);
+        ProductDto updatedProduct = this.productService.updateProduct(id, productDto);
         logger.info("Completed request for update Product details with id: {}",id);
         return new ResponseEntity<>(updatedProduct,HttpStatus.CREATED);
     }
@@ -77,10 +77,10 @@ public class ProductController {
      * @return
      */
     @DeleteMapping("/{productId}")
-    public ResponseEntity<ApiResponse> delete(@PathVariable String productId)
+    public ResponseEntity<ApiResponse> deleteProduct(@PathVariable String productId)
     {
         logger.info("Initiated request for delete Product details with id: {}",productId);
-        this.productService.delete(productId);
+        this.productService.deleteProduct(productId);
         logger.info("Completed request for delete Product details with id: {}",productId);
         ApiResponse apiResponse = ApiResponse.builder().message(ApiConstant.DELETE_PRODUCT + productId)
                 .success(true)
@@ -96,10 +96,10 @@ public class ProductController {
      * @return
      */
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDto> getById(@PathVariable String id)
+    public ResponseEntity<ProductDto> getProductById(@PathVariable String id)
     {
         logger.info("Initiated request for get Product details with id: {}",id);
-        ProductDto productDto = this.productService.getById(id);
+        ProductDto productDto = this.productService.getProductById(id);
         logger.info("Completed request for get Product details with id: {}",id);
         return new ResponseEntity<>(productDto,HttpStatus.OK);
     }
@@ -114,7 +114,7 @@ public class ProductController {
      * @return
      */
     @GetMapping
-    public ResponseEntity<PageableResponse<ProductDto>> getAll(
+    public ResponseEntity<PageableResponse<ProductDto>> getAllProducts(
             @RequestParam(value="pageNumber",defaultValue = ApiConstant.PAGE_NUMBER,required = false) int pageNumber,
             @RequestParam(value = "pageSize",defaultValue = ApiConstant.PAGE_SIZE,required = false) int pageSize,
             @RequestParam(value="sortBy",defaultValue = ApiConstant.PRODUCT_PRICE,required = false) String sortBy,
@@ -122,7 +122,7 @@ public class ProductController {
     )
     {
         logger.info("Initiated request for get all Product's details");
-        PageableResponse<ProductDto> allProduct = this.productService.getAll(pageNumber, pageSize, sortBy, sortDir);
+        PageableResponse<ProductDto> allProduct = this.productService.getAllProducts(pageNumber, pageSize, sortBy, sortDir);
         logger.info("Completed request for get all Product's details");
         return new ResponseEntity<>(allProduct,HttpStatus.OK);
     }
@@ -137,7 +137,7 @@ public class ProductController {
      * @return
      */
     @GetMapping("/live")
-    public ResponseEntity<PageableResponse<ProductDto>> getAllLive(
+    public ResponseEntity<PageableResponse<ProductDto>> getAllLiveProducts(
             @RequestParam(value="pageNumber",defaultValue = ApiConstant.PAGE_NUMBER,required = false) int pageNumber,
             @RequestParam(value = "pageSize",defaultValue = ApiConstant.PAGE_SIZE,required = false) int pageSize,
             @RequestParam(value="sortBy",defaultValue = ApiConstant.PRODUCT_PRICE,required = false) String sortBy,
@@ -145,7 +145,7 @@ public class ProductController {
     )
     {
         logger.info("Initiated request for get all live Product's details");
-        PageableResponse<ProductDto> allLiveProduct = this.productService.getAllLive(pageNumber, pageSize, sortBy, sortDir);
+        PageableResponse<ProductDto> allLiveProduct = this.productService.getAllLiveProducts(pageNumber, pageSize, sortBy, sortDir);
         logger.info("Completed request for get all live Product's details");
         return new ResponseEntity<>(allLiveProduct,HttpStatus.OK);
     }
@@ -161,7 +161,7 @@ public class ProductController {
      * @return
      */
     @GetMapping("/search/{subTitle}")
-    public ResponseEntity<PageableResponse<ProductDto>> getBySubTitle(
+    public ResponseEntity<PageableResponse<ProductDto>> getProductBySubTitle(
             @PathVariable String subTitle,
             @RequestParam(value="pageNumber",defaultValue = ApiConstant.PAGE_NUMBER,required = false) int pageNumber,
             @RequestParam(value = "pageSize",defaultValue = ApiConstant.PAGE_SIZE,required = false) int pageSize,
@@ -170,7 +170,7 @@ public class ProductController {
     )
     {
         logger.info("Initiated request for get all live Product's details with subTitle:{} ",subTitle);
-        PageableResponse<ProductDto> bySubTitle = this.productService.searchByTitle(subTitle, pageNumber, pageSize, sortBy, sortDir);
+        PageableResponse<ProductDto> bySubTitle = this.productService.searchProductByTitle(subTitle, pageNumber, pageSize, sortBy, sortDir);
         logger.info("Completed request for get all live Product's details with subTitle:{} ",subTitle);
         return new ResponseEntity<>(bySubTitle,HttpStatus.OK);
     }
@@ -192,9 +192,9 @@ public class ProductController {
         logger.info("Initiated request for upload image for Product with id:{} ",productId);
         String imageName = this.fileService.uploadFile(file, imagePath);
         logger.info("Completed request for upload image for Product with id:{} ",productId);
-        ProductDto productDto = this.productService.getById(productId);
+        ProductDto productDto = this.productService.getProductById(productId);
         productDto.setImageName(imageName);
-        this.productService.update(productId,productDto);
+        this.productService.updateProduct(productId,productDto);
         ImageResponse imageResponse = ImageResponse.builder()
                 .imageName(productDto.getImageName())
                 .message(ApiConstant.PRODUCT_IMAGE+imageName)
@@ -215,7 +215,7 @@ public class ProductController {
     @GetMapping("/getProductImage/{id}")
     public void serveProductImage(@PathVariable String id, HttpServletResponse response) throws IOException
     {
-        ProductDto productDto = this.productService.getById(id);
+        ProductDto productDto = this.productService.getProductById(id);
         logger.info("Product image name : {}",productDto.getImageName());
         InputStream resource = fileService.getResource(imagePath, productDto.getImageName());
         response.setContentType(MediaType.IMAGE_JPEG_VALUE);
