@@ -80,6 +80,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteProduct(String productId) {
+        logger.info("Request sent to Product Repository to delete Product details with id:{} ",productId);
         Product product = this.productRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException(ApiConstant.PRODUCT_NOT_FOUND + productId));
         String fullImagePath=imagePath+product.getImageName();
@@ -97,7 +98,6 @@ public class ProductServiceImpl implements ProductService {
         {
            e.printStackTrace();
         }
-        logger.info("Request sent to Product Repository to delete Product details with id:{} ",productId);
         this.productRepository.delete(product);
         logger.info("Product details deleted successfully with id:{} ",productId);
     }
