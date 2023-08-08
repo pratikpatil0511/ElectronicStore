@@ -65,10 +65,10 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public PageableResponse<CategoryDto> getAllCategories(int pageNumber,int pageSize,String sortBy,String sortDir) {
+        logger.info("Request sent to Category Repository to get all Category's details");
         //by ternary operator
         Sort sort = (sortDir.equalsIgnoreCase("desc")) ? (Sort.by(sortBy).descending()) : (Sort.by(sortBy).ascending());
         Pageable pageable = PageRequest.of(pageNumber-1, pageSize, sort);
-        logger.info("Request sent to Category Repository to get all Category's details");
         Page<Category> page = this.categoryRepository.findAll(pageable);
         logger.info("All Category's details fetched successfully");
 
